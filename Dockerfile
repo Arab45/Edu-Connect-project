@@ -12,9 +12,6 @@ COPY package*.json ./
 # RUN npm install --production
 RUN npm install
 
-# Install production dependencies only
-RUN npm ci --only=production
-
 COPY . .
 
 EXPOSE 3000
