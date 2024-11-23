@@ -7,8 +7,8 @@ const { connectToDB } = require('./src/db/index')
 app.use(express.json());
 app.use('/api/v1', userRouter)
 
-app.listen(process.env.PORT_NUM, () => {
-    console.log(`http://localhost:${process.env.PORT_NUM}`);
-    console.log('server running on port', process.env.PORT_NUM);
+app.listen(process.env.PORT, () => {
+    console.log(`http://localhost:${process.env.PORT}`);
+    console.log('server running on port', process.env.PORT);
     connectToDB()
 })

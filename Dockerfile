@@ -3,7 +3,7 @@ FROM node:20
 
 ENV NODE_ENV=production
 
-WORKDIR /app
+WORKDIR /
 
 # COPY ["package.json", "package-lock.json*", "./"]
 COPY package*.json ./
@@ -17,6 +17,6 @@ RUN npm ci --only=production
 
 COPY . .
 
-EXPOSE 2000
+EXPOSE 3000
 
 CMD [ "node", "./App.js" ]
