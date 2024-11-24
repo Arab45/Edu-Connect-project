@@ -1,8 +1,11 @@
 const { sendError, sendSuccess } = require("../middleware");
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 const { generateOTP } = require('../middleware/index');
 const verificationToken = require("../models/verificationToken");
 const User = require("../models/User");
+const { isValidObjectId } = require("mongoose");
 
 const checkUserExistence = async (req, res, next) => {
     const { logInID, password } = req.body;
@@ -92,7 +95,7 @@ const verifyLogin = async (req, res, next) => {
         };
 
         try {
-            const user = await User.findById(adminId);
+            const user = await User.findById(userId);
             req.body = { user };
            // return sendSuccess(res, 'Successfully confirm otp.', admin)
             next();
@@ -102,18 +105,18 @@ const verifyLogin = async (req, res, next) => {
         }
     } catch (error) {
         console.log(error);
-        return sendError(res, 'Unable to verify login. Something went wrong.');
+        return sendError(res, 'Unable to verify login. Something went wrong.', 500);
     }
 };
 
 
 //Authenticating the user Login credentials
-const loginAdminIn = (req, res, next) => {
+const loginUserIn = (req, res, next) => {
     const { user } = req.body;
 
     //Encoding the user payload
     const loginToken = jwt.sign({userId: user._id}, 
-        process.env.JWT_ADMIN_SECRET, {expiresIn: '1d'});
+        process.env.JWT_USER_SECRET, {expiresIn: '1d'});
 
         //Creating both server/browser cookies
         res.cookie(String(user._id), loginToken, {
@@ -123,8 +126,9 @@ const loginAdminIn = (req, res, next) => {
             sameSite: 'lax'
         });
 
-        req.body = { user, loginToken };
-        next();
+        return sendSuccess(res, "authorization successful", user);
+        // req.body = { user, loginToken };
+        // next();
     
 };
 
@@ -143,13 +147,13 @@ const verifyLoginAdminToken = (req, res, next) => {
     };
 
     //Decoding Admin token
-    jwt.verify(String(token), process.env.JWT_ADMIN_SECRET, (error, success) => {
+    jwt.verify(String(token), process.env.JWT_USER_SECRET, (error, success) => {
         if(error){
             return sendError(res, 'Your session cannot be verified, you are not authorize to access this resource')
         };
 
         //custom rquest id
-      req.id = success.adminId;
+      req.id = success.userId;
       next();
     })
 };
@@ -169,27 +173,48 @@ const logOut = (req, res) => {
     };
 
     //Decoding my cookies
-    jwt.verify(String(token), process.env.JWT_ADMIN_SECRET, (error, success) => {
+    jwt.verify(String(token), process.env.JWT_USER_SECRET, (error, success) => {
         if(error){
             return sendError(res, 'Your session cannot be verified, you are not authorize to access this resource')
         };
-         });
 
-         
+
          //clearing the cookie from my database
-         res.clearCookie([`${success.adminId}`]);
-
+         res.clearCookie([`${success.userId}`]);
+         return sendSuccess(res, 'Successfully logged out.');
          //setting the ID value to empty cokies. It also an array of available cookies
         //  res.cookies[`${success.adminId}`] = '';
         //  return sendError(res, 'Successfully logged out.')
+         });
+
+         
+        
 };
+
+const forgotPassword = async (req, res) => {
+    const { email } = req.body;
+
+    const user = await User.findOne({email});
+        if(!user){
+            return sendError(res, 'no user payload detected');
+        }
+
+        const token = crypto.randomBytes(32).toString('hex');
+        const hashToken = crypto.createHash('sha256').update(token).digest('hex');
+    try {
+        
+    } catch (error) {
+        console.log(error);
+        return sendError(res, 'Unable to verify login. Something went wrong.');
+    }
+}
 
 module.exports = {
     checkUserExistence,
     loginAttempt,
     generateVerificationToken,
     verifyLogin,
-    loginAdminIn,
+    loginUserIn,
     verifyLoginAdminToken,
     logOut
 }
