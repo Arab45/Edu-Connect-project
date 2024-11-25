@@ -1,6 +1,6 @@
 const express = require('express');
 const { signUp } = require('../controller/user-Controller');
-const { sendUserEmail, userTokenEmail, loginsessionEmail, resetPasswordEmail } = require('../../service/userEmailTemp');
+const { sendUserEmail, userTokenEmail, loginsessionEmail, resetPasswordEmail, emailPasswordSuccess } = require('../../service/userEmailTemp');
 const { validateSignup, validation } = require('../middleware/validator');
 const { userExistence } = require('../middleware/user');
 const { 
@@ -22,6 +22,6 @@ router.post('/login-session/:userId', verifyLogin, loginUserIn);
 router.get('/verifySession',  verifyLoginAdminToken, loginsessionEmail);
 router.get('/logout',  logOut);
 router.post('/forget-password-token', forgetPasswordToken, resetPasswordEmail);
-router.post('/reset-password/:token', resetPassword);
+router.post('/reset-password/:token', resetPassword, emailPasswordSuccess);
 
 module.exports = router;

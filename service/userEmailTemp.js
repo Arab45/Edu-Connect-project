@@ -5,6 +5,7 @@ const { sendSuccess } = require("../src/middleware");
 const sendMail = require("../src/utils/sendMail");
 const User = require('../src/models/User');
 const { resetPassTemp } = require("../public/resetPasswordEmailTemp");
+const { resetPasswordSuccess } = require("../public/resetPasswordSuccess");
 
 
 const sendUserEmail = async (req, res) => {
@@ -77,10 +78,28 @@ const resetPasswordEmail = async (req, res) => {
 };
 
 
+const emailPasswordSuccess = async (req, res) => {
+    const { upadatePassword } = req.body;
+    const email = upadatePassword.email;
+     const username = upadatePassword.username;
+     const subject = 'Successfully reset password!';
+     const body = resetPasswordSuccess( username );
+ 
+     try {
+         sendMail(email, subject, body);
+     } catch (error) {
+         console.log(error.message);
+         return sendSuccess(res, 'Unable to reset password. Please try again.');   
+     }
+     return sendSuccess( res, 'Email has been successfully send to you.', upadatePassword );
+ };
+
+
 
 module.exports = {
     sendUserEmail,
     userTokenEmail,
     loginsessionEmail,
-    resetPasswordEmail
+    resetPasswordEmail,
+    emailPasswordSuccess
 }

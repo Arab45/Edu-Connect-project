@@ -217,7 +217,7 @@ const forgetPasswordToken = async (req, res, next) => {
     }
 };
 
-const resetPassword = async (req, res) => {
+const resetPassword = async (req, res, next) => {
     const { token } = req.params;
     const { newPassword } = req.body;
 
@@ -247,8 +247,10 @@ const resetPassword = async (req, res) => {
 
 
   try {
-    const UpadatePassword = await user.save();
-    return sendSuccess(res, "Password reset successful", UpadatePassword);
+    const upadatePassword = await user.save();
+    // return sendSuccess(res, "Password reset successful", upadatePassword);
+    req.body = { upadatePassword };
+    next();
   } catch (error) {
     console.log(error);
     return sendError(res, 'Something went wrong.');
