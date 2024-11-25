@@ -26,7 +26,7 @@ const userSchema = new Schema({
         type: String
     },
     resetPasswordExpiredAt: {
-        type: String
+        type: Date
     },
     creatAt: {
         type: Date,

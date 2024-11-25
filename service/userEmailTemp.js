@@ -3,7 +3,8 @@ const loginSessiontemp = require("../public/registrationSession");
 const loginOTPtemp = require("../public/registratintokenTemp");
 const { sendSuccess } = require("../src/middleware");
 const sendMail = require("../src/utils/sendMail");
-const User = require('../src/models/User')
+const User = require('../src/models/User');
+const { resetPassTemp } = require("../public/resetPasswordEmailTemp");
 
 
 const sendUserEmail = async (req, res) => {
@@ -58,9 +59,28 @@ const loginsessionEmail = async (req, res) => {
     return sendSuccess( res, 'Email has been successfully send to you.', user );
 };
 
+const resetPasswordEmail = async (req, res) => {
+   const { resetToken, user } = req.body;
+    
+    const email = user.email;
+    const username = user.username;
+    const subject = 'Verify that it is you!';
+    const body = resetPassTemp( username, resetToken );
+
+    try {
+        sendMail(email, subject, body);
+    } catch (error) {
+        console.log(error.message);
+        return sendSuccess(res, 'Unable to send the OTP email. Please try again.');   
+    }
+    return sendSuccess( res, 'Email has been successfully send to you.', user );
+};
+
+
 
 module.exports = {
     sendUserEmail,
     userTokenEmail,
-    loginsessionEmail
+    loginsessionEmail,
+    resetPasswordEmail
 }

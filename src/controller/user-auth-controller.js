@@ -191,7 +191,7 @@ const logOut = (req, res) => {
         
 };
 
-const forgotPassword = async (req, res) => {
+const forgetPasswordToken = async (req, res, next) => {
     const { email } = req.body;
 
     const user = await User.findOne({email});
@@ -199,15 +199,62 @@ const forgotPassword = async (req, res) => {
             return sendError(res, 'no user payload detected');
         }
 
-        const token = crypto.randomBytes(32).toString('hex');
-        const hashToken = crypto.createHash('sha256').update(token).digest('hex');
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        // const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
+        const hashToken = bcrypt.hashSync(resetToken, 10);
     try {
-        
+         // Store the hash and expiration in the database
+         user.resetPaswordToken = hashToken;
+         user.resetPasswordExpiredAt = Date.now() + 1000 * 60 * 60 * 24;
+         await user.save()
+         console.log(`Send this reset link: http://localhost:3000/reset-password/${resetToken}`);
+        //  return sendSuccess(res, 'successfully create', user);
+         req.body = { resetToken, user };
+         next();
     } catch (error) {
         console.log(error);
-        return sendError(res, 'Unable to verify login. Something went wrong.');
+        return sendError(res, 'Something went wrong.');
     }
-}
+};
+
+const resetPassword = async (req, res) => {
+    const { token } = req.params;
+    const { newPassword } = req.body;
+
+   
+
+    const user = await User.findOne({ resetPasswordExpiredAt: {$gt: Date.now()} });
+
+    if (!user) {
+    return sendError(res, "Invalid or expired token");
+   }
+
+
+   const hashToken = user.resetPaswordToken;
+   const isValidToken = bcrypt.compareSync(token, hashToken);
+   if(!isValidToken){
+    return sendError(res, 'invalid or expired token', 400);
+   }
+
+   // Hash the new 
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(newPassword, salt);
+
+    // Update the user's password and clear the reset token
+    user.password = hashedPassword;
+    user.resetPaswordToken = undefined;
+     user.resetPasswordExpiredAt = undefined;
+
+
+  try {
+    const UpadatePassword = await user.save();
+    return sendSuccess(res, "Password reset successful", UpadatePassword);
+  } catch (error) {
+    console.log(error);
+    return sendError(res, 'Something went wrong.');
+  }
+
+  };
 
 module.exports = {
     checkUserExistence,
@@ -216,5 +263,7 @@ module.exports = {
     verifyLogin,
     loginUserIn,
     verifyLoginAdminToken,
-    logOut
+    logOut,
+    forgetPasswordToken,
+    resetPassword,
 }
