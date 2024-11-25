@@ -1,5 +1,5 @@
 const express = require('express');
-const { signUp } = require('../controller/user-Controller');
+const { signUp } = require('../controller/user-controller');
 const { sendUserEmail, userTokenEmail, loginsessionEmail, resetPasswordEmail, emailPasswordSuccess } = require('../../service/userEmailTemp');
 const { validateSignup, validation } = require('../middleware/validator');
 const { userExistence } = require('../middleware/user');
