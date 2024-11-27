@@ -20,10 +20,41 @@ const signUp = async (req, res, next) => {
         req.body = { newUser }
         next();
     } catch (error) {
-      return sendError(res, 'Something when wrong', 500);  
+        console.log(error);
+        return sendError(res, 'Something when wrong', 500);  
     }
 };
 
+const fetchSingleUser = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const singleUser = await User.findById(id);
+        if(!singleUser){
+            return sendError(res, 'user does not exist, signUp instead', 400);
+        }
+        return sendSuccess(res, 'successfully fetch single user', singleUser);
+    } catch (error) {
+        console.log(error);
+        return sendError(res, 'Something when wrong', 500); 
+    }
+};
+
+const fetchAllUser = async (req, res) => {
+    try {
+       const allUser = await User.find();
+       if(!allUser){
+        return sendError(res, 'No data detected', 400);
+       };
+       return sendSuccess(res, 'successfully fetch all user data',  allUser); 
+    } catch (error) {
+        console.log(error);
+        return sendError(res, 'Something when wrong', 500);
+    }
+}
+
 module.exports = {
-    signUp
+    signUp,
+    fetchSingleUser,
+    fetchAllUser
 }

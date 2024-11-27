@@ -3,7 +3,11 @@ const User = require('../models/User');
 
 const userExistence = async (req, res, next) => {
     const { email, username } = req.body;
+    req.body.email = req.body.email.toLowerCase();
+    req.body.username = req.body.username.toLowerCase();
     
+    let userExist;
+
     try {
         const userExist = await User.findOne({email});
         if(userExist){

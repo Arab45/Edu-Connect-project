@@ -32,7 +32,22 @@ const validateSignup = [
     .isLength({min: 8})
     .withMessage('password must at least 8 character long')
     .matches(/^(?=.*[a-zA-Z])(?=.*\d)/)
-    .withMessage('Password must contain both letters and numbers')
+    .withMessage('Password must contain both letters and numbers'),
+    check('class')
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage('class is missing'),
+    check('subject')
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage('subject is missing'),
+    check('school')
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage('school is missing')
 ];
 
 const validation = (req, res, next) => {

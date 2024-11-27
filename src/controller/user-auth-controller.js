@@ -9,6 +9,7 @@ const { isValidObjectId } = require("mongoose");
 
 const checkUserExistence = async (req, res, next) => {
     const { logInID, password } = req.body;
+    req.body.logInID = req.body.logInID.toLowerCase();
 
     try {
         const checkuserExist = await User.findOne({email: logInID})
