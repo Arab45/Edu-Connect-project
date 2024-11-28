@@ -50,6 +50,31 @@ const validateSignup = [
     .withMessage('school is missing')
 ];
 
+const validateQuestion = [
+    check('title')
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage('title is missing'),
+    check('body')
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage('body is missing')
+    .isLength({min: 10})
+    .withMessage('body must at least 10 words long')
+];
+
+const validateAnswer = [
+    check('body')
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage('body is missing')
+    .isLength({min: 10})
+    .withMessage('body must at least 10 words long')
+]
+
 const validation = (req, res, next) => {
     const error = validationResult(req).array();
     if(error.length > 0){
@@ -62,5 +87,7 @@ const validation = (req, res, next) => {
 
     module.exports = {
         validateSignup,
+        validateQuestion,
+        validateAnswer,
         validation
     }
