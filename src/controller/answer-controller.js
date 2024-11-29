@@ -37,7 +37,7 @@ const fetchSingleAnswer = async (req, res) => {
     const { id } = req.params
 
     try {
-        const singleAnswer = await Question.findById(id);
+        const singleAnswer = await Answer.findById(id);
         if(!singleAnswer){
             return sendError(res, "unable to fetch single answer", 401);
         }
