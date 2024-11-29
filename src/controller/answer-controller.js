@@ -3,10 +3,11 @@ const Answer = require("../models/Answer");
 
 
 const createAnswer = async (req, res) => {
-    const { owner, body } = req.body;
+    const { userId, questionId, body } = req.body;
    
     const newAnswer = new Answer({
-        owner,
+        userId,
+        questionId,
         body
     });
 

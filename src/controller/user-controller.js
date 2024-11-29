@@ -11,7 +11,7 @@ const signUp = async (req, res, next) => {
 
     req.body.password = hashpassword;
 
-    const newUser = new User({ ...req.body })
+    const newUser = new User({ ...req.body });
 
     try {
         await newUser.save();

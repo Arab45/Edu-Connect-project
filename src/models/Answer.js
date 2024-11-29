@@ -2,10 +2,15 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
 const answerSchema = new Schema({
-    owner: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Question',
         required: true
+    },
+    questionId: { 
+        type: String, 
+        ref: 'Question', 
+        required: true 
     },
     body: {
         type: String,

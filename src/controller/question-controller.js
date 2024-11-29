@@ -2,10 +2,10 @@ const { sendError, sendSuccess } = require("../middleware");
 const Question = require("../models/Question")
 
 const createQuestion = async (req, res) => {
-    const { owner, title, body } = req.body;
+    const { userId, title, body } = req.body;
    
     const newQuestion = new Question({
-        owner,
+        userId,
         title,
         body
     });

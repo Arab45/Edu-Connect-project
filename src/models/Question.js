@@ -2,14 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
 const questionSchema = new Schema({
-    owner: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
     title: {
         type: String,
-        maxlength: 255,
         required: true
     },
     body: {
