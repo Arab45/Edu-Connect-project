@@ -46,7 +46,7 @@ const updatedProfile = async (req, res) => {
 const deletedProfile = async (req, res) => {
     const { id } = req.params;
     try {
-      const profileD = await profile.findByIdAndDelete(id);
+      const profileD = await Profile.findByIdAndDelete(id);
       if(!profileD){
         return sendError(res, "Unable to fetch data");
     };
