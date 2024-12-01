@@ -19,11 +19,6 @@ const validateSignup = [
     .not()
     .isEmpty()
     .withMessage('username is missing'),
-    check('phone')
-    .trim()
-    .not()
-    .isEmpty()
-    .withMessage('phone number is missing'),
     check('password')
     .trim()
     .not()
