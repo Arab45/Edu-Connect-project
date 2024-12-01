@@ -1,8 +1,9 @@
 const { sendError, sendSuccess } = require('../middleware/index');
-const Profile = require('../models/profile');
+const profile = require('../models/profile');
+
 
 const createProfile = async (req, res) => {
-    const newProfile = new Profile({
+    const newProfile = new profile({
         ...req.body
     });
 
@@ -17,7 +18,7 @@ const createProfile = async (req, res) => {
 
 const fetchAllProfile = async (req, res) => {
     try {
-       const allProfile = await Profile.find();
+       const allProfile = await profile.find();
        if(!allProfile){
         return sendError(res, 'profile not detected');
        };
@@ -31,11 +32,11 @@ const fetchAllProfile = async (req, res) => {
 const updatedProfile = async (req, res) => {
     const { id } = req.params;
     try {
-        const profile = await Profile.findByIdandUpdate(id, {$set: req.body}, {now: true});
-        if(!profile){
+        const profileU = await profile.findByIdandUpdate(id, {$set: req.body}, {now: true});
+        if(!profileU){
             return sendError(res, "Unable to fetch data");
         };
-        return sendSuccess(res, 'successfully update user profile', profile);
+        return sendSuccess(res, 'successfully update user profile', profileU);
     } catch (error) {
        console.log(error);
        return sendError(res, 'Unable to perform this action, something went wrong', 500); 
@@ -45,11 +46,11 @@ const updatedProfile = async (req, res) => {
 const deletedProfile = async (req, res) => {
     const { id } = req.params;
     try {
-      const profile = await Profile.findByIdandDelete(id);
-      if(!profile){
+      const profileD = await profile.findByIdandDelete(id);
+      if(!profileD){
         return sendError(res, "Unable to fetch data");
     };
-    return sendSuccess(res, 'successfully update user profile', profile);  
+    return sendSuccess(res, 'successfully update user profile', profileD);  
     } catch (error) {
         console.log(error);
        return sendError(res, 'Unable to perform this action, something went wrong', 500); 
