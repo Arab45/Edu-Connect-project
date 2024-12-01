@@ -1,9 +1,9 @@
 const { sendError, sendSuccess } = require('../middleware/index');
-const profile = require('../models/profile');
+const Profile = require('../models/Profile');
 
 
 const createProfile = async (req, res) => {
-    const newProfile = new profile({
+    const newProfile = new Profile({
         ...req.body
     });
 
@@ -18,7 +18,7 @@ const createProfile = async (req, res) => {
 
 const fetchAllProfile = async (req, res) => {
     try {
-       const allProfile = await profile.find();
+       const allProfile = await Profile.find();
        if(!allProfile){
         return sendError(res, 'profile not detected');
        };
@@ -32,7 +32,7 @@ const fetchAllProfile = async (req, res) => {
 const updatedProfile = async (req, res) => {
     const { id } = req.params;
     try {
-        const profileU = await profile.findByIdAndUpdate(id, {$set: req.body}, {now: true});
+        const profileU = await Profile.findByIdAndUpdate(id, {$set: req.body}, {now: true});
         if(!profileU){
             return sendError(res, "Unable to fetch data");
         };
