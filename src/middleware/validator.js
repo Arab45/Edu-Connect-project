@@ -58,6 +58,24 @@ const validateAnswer = [
     .withMessage('body is missing')
     .isLength({min: 10})
     .withMessage('body must at least 10 words long')
+];
+
+const validateProfile = [
+    check('subject')
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage('subject is missing'),
+    check('class')
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage('class is missing'),
+    check('school')
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage('school is missing'),
 ]
 
 const validation = (req, res, next) => {
@@ -74,5 +92,6 @@ const validation = (req, res, next) => {
         validateSignup,
         validateQuestion,
         validateAnswer,
+        validateProfile,
         validation
     }
