@@ -31,4 +31,8 @@ const resetPassTemp = ( username, resetURL ) => {
 return main
 };
 
-module.exports = { resetPassTemp };
+   
+
+module.exports = { 
+  resetPassTemp, 
+};

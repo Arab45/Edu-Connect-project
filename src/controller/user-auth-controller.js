@@ -134,8 +134,8 @@ const loginUserIn = (req, res, next) => {
 };
 
 
-//Authorized user Admin credentials
-const verifyLoginAdminToken = (req, res, next) => {
+//Authorized user credentials
+const verifyLoginUserToken = (req, res, next) => {
     const cookie = req.headers.cookie;
 
     if(!cookie){
@@ -147,7 +147,7 @@ const verifyLoginAdminToken = (req, res, next) => {
         return sendError(res, 'No session cookie found, login first');
     };
 
-    //Decoding Admin token
+    //Decoding User token
     jwt.verify(String(token), process.env.JWT_USER_SECRET, (error, success) => {
         if(error){
             return sendError(res, 'Your session cannot be verified, you are not authorize to access this resource')
@@ -265,7 +265,7 @@ module.exports = {
     generateVerificationToken,
     verifyLogin,
     loginUserIn,
-    verifyLoginAdminToken,
+    verifyLoginUserToken,
     logOut,
     forgetPasswordToken,
     resetPassword,
