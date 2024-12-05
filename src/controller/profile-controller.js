@@ -17,12 +17,30 @@ const createProfile = async (req, res) => {
 };
 
 const fetchAllProfile = async (req, res) => {
+    let { page, pageSize } = req.query;
+
+
+    page = parseInt(page, 2) || 1;
+    pageSize = parseInt(pageSize, 10) || 50;
+
+
     try {
-       const allProfile = await Profile.find();
-       if(!allProfile){
-        return sendError(res, 'profile not detected');
-       };
-       return sendSuccess(res, 'successfully fetch all profile', allProfile);
+        const allProfile = await Profile.aggregate([
+            {
+              $facet: {
+                metadata: [{ $count: 'totalCount' }],
+                data: [{ $skip: (page - 1) * pageSize }, { $limit: pageSize }],
+              },
+            },
+          ]);
+
+          return res.status(200).json({
+            success: true,
+            articles: {
+              metadata: { totalCount: allProfile[0].metadata[0].totalCount, page, pageSize },
+              data: allProfile[0].data,
+            },
+          });
     } catch (error) {
         console.log(error);
         return sendError(res, 'Unable to perform this action, something went wrong', 500);
