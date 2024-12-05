@@ -63,18 +63,36 @@ const fetchSingleAnswer = async (req, res) => {
 
 const updatedAnswer = async (req, res) => {
     const { id } = req.params;
+    console.log(id);
+    console.log("req.body", req.body);
+  
+    if (req.files) {
+      const rawImageArray = req?.files["diagram_image"];
+      if (rawImageArray) {
+        const namedImage = rawImageArray.map((a) => a.filename);
+        const stringnifiedImage = JSON.stringify(namedImage);
+        const formmatedImage = stringnifiedImage.replace(/[^a-zA-Z0-9_.,]/g, "");
+        req.body.diagram_image = formmatedImage;
 
-    try {
-        const modifyAnswer = await Answer.findByIdAndUpdate(id, {$set: req.body}, {now: true});
-        if(!modifyAnswer){
-            return sendError(res, "Unable to fetch data");
-        };
-        return sendSuccess(res, "successfully update user answer", modifyAnswer);
-    } catch (error) {
-        console.log(error);
-        return sendError(res, 'Unable to perform the operation, something went wrong', 500);
+      }
     }
-};
+  
+    try {
+      const updatedItem = await Subject.findByIdAndUpdate(
+        id,
+        { $set: req.body },
+        { new: true }
+      );
+      console.log("updatedItem", updatedItem);
+      if (!updatedItem) {
+        return sendError(res, "Unable to update the data. Data does not exist");
+      }
+      return sendSuccess(res, "Successfully updated the data", updatedItem);
+    } catch (error) {
+      console.log(error);
+      return sendError(res, 'something went wrong', 500);
+    }
+  };
 
 const deletedAnswer = async (req, res) => {
     const { id } = req.params;
