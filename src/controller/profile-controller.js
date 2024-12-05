@@ -21,7 +21,7 @@ const fetchAllProfile = async (req, res) => {
 
 
     page = parseInt(page, 10) || 1;
-    pageSize = parseInt(pageSize, 10) || 2;
+    pageSize = parseInt(pageSize, 10) || 5;
 
 
     try {
@@ -41,7 +41,7 @@ const fetchAllProfile = async (req, res) => {
               },
           };
 
-          return sendSuccess(res, true, data, allProfile);
+          return sendSuccess(res, 'succcessfully fetch data', data, allProfile);
     } catch (error) {
         console.log(error);
         return sendError(res, 'Unable to perform this action, something went wrong', 500);

@@ -17,6 +17,9 @@ const answerSchema = new Schema({
         minlength: 10,
         required: true
     },
+    diagram_image: {
+        type: String
+    },
     createdAt: {
         type: Date,
         default: Date.now()

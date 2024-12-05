@@ -3,12 +3,25 @@ const Answer = require("../models/Answer");
 
 
 const createAnswer = async (req, res) => {
-    const { userId, questionId, body } = req.body;
+    const { userId, questionId, body, diagram_image } = req.body;
+
+    if (!req.files) {
+        return sendError(res, "answer image is missing");
+      };
+      const rawImageArray = req?.files["diagram_image"];
+      const namedImage = rawImageArray.map((a) => a.filename);
+      const stringnifiedImage = JSON.stringify(namedImage);
+      const formmatedImage = stringnifiedImage.replace(/[^a-zA-Z0-9_.,]/g, "");
+    console.log('my formated image', formmatedImage);
+    
+        
+    req.body.diagram_image = formmatedImage;
    
     const newAnswer = new Answer({
         userId,
         questionId,
-        body
+        body,
+        diagram_image
     });
 
 

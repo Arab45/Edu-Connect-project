@@ -7,10 +7,6 @@ const cloudinary = require('../utils/cloudinary');
 const createSubject = async (req, res) => {
     const adminId = req.id;
 
-    //cloudinary setup
-    const uploadedResponse= await cloudinary.uploader.upload(fileStr, {upload_preset: "educonnect"});
-
-
 
     if (!req.files) {
       return sendError(res, "Subject cover image is missing");
