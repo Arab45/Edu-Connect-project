@@ -88,7 +88,6 @@ const verifyLoginAdminToken = (req, res, next) => {
             return sendError(res, 'Your session cannot be verified, you are not authorize to access this resource')
         };
  
-        console.log(success);
         //custom rquest id
       req.id = success.userId;
       next();

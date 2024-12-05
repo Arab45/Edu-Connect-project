@@ -1,11 +1,11 @@
-const { registrationEmailATemp, adminEmailATemp } = require("../public/registrationEmail");
-const { loginSessiontemp, adminSessiontemp }= require("../public/registrationSession");
-const loginOTPtemp = require("../public/registratintokenTemp");
+const { registrationEmailATemp, adminEmailATemp } = require("../public/main/registrationEmail");
+const { loginSessiontemp, adminSessiontemp }= require("../public/main/registrationSession");
+const loginOTPtemp = require("../public/main/registratintokenTemp");
 const { sendSuccess } = require("../src/middleware");
 const sendMail = require("../src/utils/sendMail");
 const User = require('../src/models/User');
-const { resetPassTemp } = require("../public/resetPasswordEmailTemp");
-const { resetPasswordSuccess } = require("../public/resetPasswordSuccess");
+const { resetPassTemp } = require("../public/main/resetPasswordEmailTemp");
+const { resetPasswordSuccess } = require("../public/main/resetPasswordSuccess");
 const Admin = require("../src/models/Admin");
 
 

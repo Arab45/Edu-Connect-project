@@ -2,7 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
 const subjectSchema = new Schema({
-    category: {
+    added_by: {
+        type: String,
+        required: true
+    },
+    subject: {
         type: String,
         required: true
     },
@@ -10,8 +14,9 @@ const subjectSchema = new Schema({
         type: String,
         required: true
     },
-    picture: {
-        type: String
+    subject_image: {
+        type: String,
+        required: true
     },
     createdAt: {
         type: Date,
