@@ -21,7 +21,7 @@ const fetchAllProfile = async (req, res) => {
 
 
     page = parseInt(page, 10) || 1;
-    pageSize = parseInt(pageSize, 2) || 3;
+    pageSize = parseInt(pageSize, 2) || 10;
 
 
     try {
@@ -34,13 +34,14 @@ const fetchAllProfile = async (req, res) => {
             },
           ]);
 
-          return res.status(200).json({
-            success: true,
+          const data = {
             allProfile: {
-              metadata: { totalCount: allProfile[0].metadata[0].totalCount, page, pageSize },
-              data: allProfile[0].data,
-            },
-          });
+                metadata: { totalCount: allProfile[0].metadata[0].totalCount, page, pageSize },
+                data: allProfile[0].data,
+              },
+          };
+
+          return sendSuccess(res, true, data, allProfile);
     } catch (error) {
         console.log(error);
         return sendError(res, 'Unable to perform this action, something went wrong', 500);
