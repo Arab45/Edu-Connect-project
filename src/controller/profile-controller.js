@@ -21,7 +21,7 @@ const fetchAllProfile = async (req, res) => {
 
 
     page = parseInt(page, 10) || 1;
-    pageSize = parseInt(pageSize, 5) || 2;
+    pageSize = parseInt(pageSize, 10) || 2;
 
 
     try {
