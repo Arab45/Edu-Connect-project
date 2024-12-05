@@ -20,8 +20,8 @@ const fetchAllProfile = async (req, res) => {
     let { page, pageSize } = req.query;
 
 
-    page = parseInt(page, 2) || 1;
-    pageSize = parseInt(pageSize, 10) || 50;
+    page = parseInt(page, 10) || 1;
+    pageSize = parseInt(pageSize, 2) || 50;
 
 
     try {
@@ -36,7 +36,7 @@ const fetchAllProfile = async (req, res) => {
 
           return res.status(200).json({
             success: true,
-            articles: {
+            allProfile: {
               metadata: { totalCount: allProfile[0].metadata[0].totalCount, page, pageSize },
               data: allProfile[0].data,
             },
