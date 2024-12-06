@@ -83,6 +83,9 @@ const updatedAnswer = async (req, res) => {
             console.log('File deleted successfully!');
         });
 
+           // Handle file delete from disk by yourself
+          }
+
       }
     }
   
