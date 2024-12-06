@@ -76,7 +76,7 @@ const createSubject = async (req, res) => {
       const updatedItem = await Subject.findByIdAndUpdate(
         id,
         { $set: req.body },
-        { new: true }
+        { now: true }
       );
       console.log("updatedItem", updatedItem);
       if (!updatedItem) {

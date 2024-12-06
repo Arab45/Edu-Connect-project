@@ -83,7 +83,6 @@ const updatedAnswer = async (req, res) => {
             console.log('File deleted successfully!');
         });
 
-           // Handle file delete from disk by yourself
           }
 
       }
@@ -93,9 +92,8 @@ const updatedAnswer = async (req, res) => {
       const updatedItem = await Subject.findByIdAndUpdate(
         id,
         { $set: req.body },
-        { new: true }
+        { now: true }
       );
-      console.log("updatedItem", updatedItem);
       if (!updatedItem) {
         return sendError(res, "Unable to update the data. Data does not exist");
       }
