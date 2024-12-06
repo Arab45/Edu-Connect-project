@@ -58,8 +58,7 @@ const answerImgUpload = diagramUpload.fields([
 
 module.exports = {
     subjectImgUpload,
-    answerImgUpload,
-    imageSubject
+    answerImgUpload
 };
 
 

@@ -45,16 +45,6 @@ const validateQuestion = [
     .withMessage('body must at least 10 words long')
 ];
 
-const validateAnswer = [
-    check('body')
-    .trim()
-    .not()
-    .isEmpty()
-    .withMessage('body is missing')
-    .isLength({min: 10})
-    .withMessage('body must at least 10 words long')
-];
-
 const validateProfile = [
     check('subject')
     .trim()
@@ -86,7 +76,6 @@ const validation = (req, res, next) => {
     module.exports = {
         validateSignup,
         validateQuestion,
-        validateAnswer,
         validateProfile,
         validation
     }

@@ -3,7 +3,6 @@ const Answer = require("../models/Answer");
 
 
 const createAnswer = async (req, res) => {
-    const { userId, questionId, body, diagram_image } = req.body;
 
     if (!req.files) {
         return sendError(res, "answer image is missing");
@@ -18,10 +17,7 @@ const createAnswer = async (req, res) => {
     req.body.diagram_image = formmatedImage;
    
     const newAnswer = new Answer({
-        userId,
-        questionId,
-        body,
-        diagram_image
+        ...req.body
     });
 
 

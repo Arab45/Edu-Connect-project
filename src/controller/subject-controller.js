@@ -1,8 +1,8 @@
 const { sendError, sendSuccess } = require("../middleware");
 const Admin = require("../models/Admin");
 const Subject = require("../models/Subject");
-const path = require('path')
-const cloudinary = require('../utils/cloudinary');
+const path = require('path');
+const fs = require('fs');
 
 const createSubject = async (req, res) => {
     const adminId = req.id;
@@ -54,6 +54,20 @@ const createSubject = async (req, res) => {
         const stringnifiedImage = JSON.stringify(namedImage);
         const formmatedImage = stringnifiedImage.replace(/[^a-zA-Z0-9_.,]/g, "");
         req.body.item_image = formmatedImage;
+
+        const currentMenuData = await Subject.findById(req.params.id);
+        if (currentMenuData) {
+          const fileToDelete = currentMenuData.subject_image;
+          const filePath = path.join('public/files/imgs/subjects', fileToDelete);
+          await fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error(`Error deleting file: ${err.message}`);
+                return;
+            }
+            console.log('File deleted successfully!');
+        });
+          // Handle file delete from disk by yourself
+        }
 
       }
     }
