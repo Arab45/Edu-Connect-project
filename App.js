@@ -9,9 +9,8 @@ const userProfile = require('./src/router/profile-router');
 const adminRouter = require('./src/router/admin-router');
 const subjectRouter = require('./src/router/subject-router');
 const userVote = require('./src/router/vote-router');
-const http = require('http');
-const server = http.createServer(app);
-const websocket = require('ws');
+const server = require('http').createServer(app); 
+const  WebSocket = require('ws');
 
 
 app.use(express.json());
@@ -23,12 +22,13 @@ app.use('/Admin', adminRouter);
 app.use('/Subject', subjectRouter);
 app.use('/vote', userVote);
 
-const wss = new websocket.Server({server: server});
+const wss = new WebSocket.Server({ server: server });
 wss.on('connection', function connection(ws){
     console.log('A new client connected!');
     ws.send("welcome client");
     ws.on('message', function incoming(message){
         console.log("recieved: %s", message);
+        ws.send('Got ur msg its: ' + message);
     })
 });
 
