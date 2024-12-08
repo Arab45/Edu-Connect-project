@@ -10,18 +10,17 @@ const createAnswer = async (req, res) => {
       const rawImageArray = req?.files["diagram_image"];
       const namedImage = rawImageArray.map((a) => a.filename);
       const stringnifiedImage = JSON.stringify(namedImage);
-      const formmatedImage = stringnifiedImage.replace(/[^a-zA-Z0-9_.,]/g, "");
-    console.log('my formated image', formmatedImage);
+      const formatedImage = stringnifiedImage.replace(/[^a-zA-Z0-9_.,]/g, "");
+    console.log('my formated image', formatedImage);
     
         
-    req.body.diagram_image = formmatedImage;
+    req.body.diagram_image = formatedImage;
    
     const newAnswer = new Answer({
         ...req.body
     });
 
 
-    console.log("This is my question", newAnswer);
     try {
        const createAnswer = await newAnswer.save();
        return sendSuccess(res, 'successfully create new answer', createAnswer)
@@ -32,14 +31,35 @@ const createAnswer = async (req, res) => {
 };
 
 const fetchAllAnswer = async (req, res) => {
+  let { page, pageSize } = req.query;
 
-    try {
-    const allAnswer = await Answer.find();
-    return sendError(res, "Sucessfully fetch all answer", allAnswer);
-    } catch (error) {
-        console.log(error);
-        return sendError(res, "Unable to perform the operation, something went wrong", 500)
-    }
+
+  page = parseInt(page, 10) || 1;
+  pageSize = parseInt(pageSize, 10) || 5;
+
+
+  try {
+      const allAnswer = await Answer.aggregate([
+          {
+            $facet: {
+              metadata: [{ $count: 'totalCount' }],
+              data: [{ $skip: (page - 1) * pageSize }, { $limit: pageSize }],
+            },
+          },
+        ]);
+
+        const data = {
+          allProfile: {
+              metadata: { totalCount: allAnswer[0].metadata[0].totalCount, page, pageSize },
+              data: allAnswer[0].data,
+            },
+        };
+
+        return sendSuccess(res, 'succcessfully fetch data', data, allAnswer);
+  } catch (error) {
+      console.log(error);
+      return sendError(res, 'Unable to perform this action, something went wrong', 500);
+  }
 };
 
 const fetchSingleAnswer = async (req, res) => {
@@ -59,16 +79,14 @@ const fetchSingleAnswer = async (req, res) => {
 
 const updatedAnswer = async (req, res) => {
     const { id } = req.params;
-    console.log(id);
-    console.log("req.body", req.body);
   
     if (req.files) {
       const rawImageArray = req?.files["diagram_image"];
       if (rawImageArray) {
         const namedImage = rawImageArray.map((a) => a.filename);
         const stringnifiedImage = JSON.stringify(namedImage);
-        const formmatedImage = stringnifiedImage.replace(/[^a-zA-Z0-9_.,]/g, "");
-        req.body.diagram_image = formmatedImage;
+        const formatedImage = stringnifiedImage.replace(/[^a-zA-Z0-9_.,]/g, "");
+        req.body.diagram_image = formatedImage;
 
 
         const currentMenuData = await Subject.findById(req.params.id);

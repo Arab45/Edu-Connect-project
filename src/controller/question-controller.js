@@ -22,13 +22,34 @@ const createQuestion = async (req, res) => {
 };
 
 const fetchAllQuestion = async (req, res) => {
+    let { page, pageSize } = req.query;
+
+
+    page = parseInt(page, 10) || 1;
+    pageSize = parseInt(pageSize, 10) || 5;
+
 
     try {
-    const allQuestion = await Question.find();
-    return sendError(res, "Sucessfully fetch all question", allQuestion);
+        const allQuestion = await Question.aggregate([
+            {
+              $facet: {
+                metadata: [{ $count: 'totalCount' }],
+                data: [{ $skip: (page - 1) * pageSize }, { $limit: pageSize }],
+              },
+            },
+          ]);
+
+          const data = {
+            allQuestion: {
+                metadata: { totalCount: allQuestion[0].metadata[0].totalCount, page, pageSize },
+                data:allQuestion[0].data,
+              },
+          };
+
+          return sendSuccess(res, 'succcessfully fetch data', data, allQuestion);
     } catch (error) {
         console.log(error);
-        return sendError(res, "Unable to perform the operation, something went wrong", 500)
+        return sendError(res, 'Unable to perform this action, something went wrong', 500);
     }
 };
 

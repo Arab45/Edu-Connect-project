@@ -53,7 +53,7 @@ const updatedProfile = async (req, res) => {
     try {
         const profileU = await Profile.findByIdAndUpdate(id, {$set: req.body}, {now: true});
         if(!profileU){
-            return sendError(res, "Unable to fetch data");
+            return sendError(res, 'Unable to fetch data');
         };
         return sendSuccess(res, 'successfully update user profile', profileU);
     } catch (error) {
@@ -67,7 +67,7 @@ const deletedProfile = async (req, res) => {
     try {
       const profileD = await Profile.findByIdAndDelete(id);
       if(!profileD){
-        return sendError(res, "Unable to fetch data");
+        return sendError(res, 'Unable to fetch data');
     };
     return sendSuccess(res, 'successfully delete user profile', profileD);  
     } catch (error) {

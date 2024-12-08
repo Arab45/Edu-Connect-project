@@ -9,26 +9,26 @@ const createSubject = async (req, res) => {
 
 
     if (!req.files) {
-      return sendError(res, "Subject cover image is missing");
+      return sendError(res, 'Subject cover image is missing');
     };
-    const rawImageArray = req?.files["subject_image"];
+    const rawImageArray = req?.files['subject_image'];
     const namedImage = rawImageArray.map((a) => a.filename);
     const stringnifiedImage = JSON.stringify(namedImage);
-    const formmatedImage = stringnifiedImage.replace(/[^a-zA-Z0-9_.,]/g, "");
-  console.log('my formated image', formmatedImage);
+    const formatedImage = stringnifiedImage.replace(/[^a-zA-Z0-9_.,]/g, "");
+  console.log('my formated image', formatedImage);
     try {
       const admin = await Admin.findById(adminId);
       if (!admin) {
-        return sendError(res, "You are not authorised.");
+        return sendError(res, 'You are not authorised.');
       }
       req.body.added_by = admin.username;
-      req.body.subject_image = formmatedImage;
+      req.body.subject_image = formatedImage;
       try {
         const newSubject = new Subject({ ...req.body });
         await newSubject.save();
         return sendSuccess(
           res,
-          "Successfully added a new subject picture",
+          'Successfully added a new subject picture',
           newSubject
         );
       } catch (error) {
@@ -52,8 +52,8 @@ const createSubject = async (req, res) => {
       if (rawImageArray) {
         const namedImage = rawImageArray.map((a) => a.filename);
         const stringnifiedImage = JSON.stringify(namedImage);
-        const formmatedImage = stringnifiedImage.replace(/[^a-zA-Z0-9_.,]/g, "");
-        req.body.item_image = formmatedImage;
+        const formatedImage = stringnifiedImage.replace(/[^a-zA-Z0-9_.,]/g, "");
+        req.body.item_image = formatedImage;
 
         const currentMenuData = await Subject.findById(req.params.id);
         if (currentMenuData) {
@@ -73,16 +73,15 @@ const createSubject = async (req, res) => {
     }
   
     try {
-      const updatedItem = await Subject.findByIdAndUpdate(
+      const updatedSubject = await Subject.findByIdAndUpdate(
         id,
         { $set: req.body },
         { now: true }
       );
-      console.log("updatedItem", updatedItem);
-      if (!updatedItem) {
+      if (!updatedSubject) {
         return sendError(res, "Unable to update the data. Data does not exist");
       }
-      return sendSuccess(res, "Successfully updated the data", updatedItem);
+      return sendSuccess(res, "Successfully updated the data", updatedSubject);
     } catch (error) {
       console.log(error);
       return sendError(res, 'something went wrong', 500);
@@ -100,7 +99,7 @@ const createSubject = async (req, res) => {
       const outcome = availableSubject.filter((a) => a.subject === capitalizeSubject);
 
       if(outcome.length === 0){
-      return sendError(res, 'data does not exist');
+      return sendError(res, 'No such data exist');
       };
       return sendSuccess(res, 'successfully fetch data', outcome);
     } catch (error) {
@@ -110,17 +109,36 @@ const createSubject = async (req, res) => {
   };
 
   const fetchAll = async (req, res) => {
+    let { page, pageSize } = req.query;
+  
+  
+    page = parseInt(page, 10) || 1;
+    pageSize = parseInt(pageSize, 10) || 5;
+  
+  
     try {
-      const allSubject = await Subject.find();
-      if(!allSubject){
-        return sendError(res, 'unable to fetch all subject');
-      };
-      return sendSuccess(res, 'successfully fetch all subject', allSubject);
+        const allSubject = await Subject.aggregate([
+            {
+              $facet: {
+                metadata: [{ $count: 'totalCount' }],
+                data: [{ $skip: (page - 1) * pageSize }, { $limit: pageSize }],
+              },
+            },
+          ]);
+  
+          const data = {
+            allSubject: {
+                metadata: { totalCount: allSubject[0].metadata[0].totalCount, page, pageSize },
+                data: allSubject[0].data,
+              },
+          };
+  
+          return sendSuccess(res, 'succcessfully fetch data', data, allSubject);
     } catch (error) {
-      console.log(error);
-      return sendError(res, 'something went wrong', 500);
+        console.log(error);
+        return sendError(res, 'Unable to perform this action, something went wrong', 500);
     }
-  }
+  };
 
   const deletedSubject = async (req, res) => {
     const { id } = req.params;

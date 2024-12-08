@@ -8,7 +8,6 @@ const userAnswer = require('./src/router/answer-router');
 const userProfile = require('./src/router/profile-router');
 const adminRouter = require('./src/router/admin-router');
 const subjectRouter = require('./src/router/subject-router');
-const userNotification = require('./src/router/notification-router');
 const userVote = require('./src/router/vote-router');
 const http = require('http');
 const server = http.createServer(app);
@@ -22,7 +21,6 @@ app.use('/answer', userAnswer);
 app.use('/profile', userProfile);
 app.use('/Admin', adminRouter);
 app.use('/Subject', subjectRouter);
-app.use('/notification', userNotification);
 app.use('/vote', userVote);
 
 const wss = new websocket.Server({server: server});
