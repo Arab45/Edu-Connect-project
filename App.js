@@ -11,7 +11,7 @@ const subjectRouter = require('./src/router/subject-router');
 const userVote = require('./src/router/vote-router');
 const server = require('http').createServer(app); 
 const  WebSocket = require('ws');
-
+const cors = require('cors')
 
 app.use(express.json());
 app.use('/api/v1', userRouter)
@@ -33,6 +33,13 @@ wss.on('connection', function connection(ws){
 });
 
 
+
+cors({
+    "origin": "*",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204
+  });
 
 server.listen(process.env.PORT, () => {
     console.log(`http://localhost:${process.env.PORT}`);
