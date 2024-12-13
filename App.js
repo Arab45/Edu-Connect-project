@@ -36,7 +36,7 @@ wss.on('connection', function connection(ws){
 
 cors({
     "origin": ["*", 'http://localhost:3000'],
-    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "methods": ["GET,HEAD,PUT,PATCH,POST,DELETE"],
     "preflightContinue": false,
     "optionsSuccessStatus": 204
   });
