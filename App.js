@@ -37,6 +37,8 @@ wss.on('connection', function connection(ws){
 cors({
     "origin": ["*", 'localhost:3000'],
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204
   });
 
 server.listen(process.env.PORT, () => {
