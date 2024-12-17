@@ -23,13 +23,13 @@ app.use('/Subject', subjectRouter);
 app.use('/vote', userVote);
 
 
-app.use(
-    cors({
+   const corsOptions = {
         credentials: true,
         origin: ['http://localhost:3000'],
-        methods: ["GET,HEAD,PUT,PATCH,POST,DELETE"]
-      })
-);
+        methods: ["GET","HEAD","PUT","PATCH","POST","DELETE"]
+      };
+
+      app.use(cors(corsOptions));
 
 const wss = new WebSocket.Server({ server: server });
 wss.on('connection', function connection(ws){
