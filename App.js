@@ -22,6 +22,15 @@ app.use('/Admin', adminRouter);
 app.use('/Subject', subjectRouter);
 app.use('/vote', userVote);
 
+
+app.use(
+    cors({
+        credentials: true,
+        origin: ["*", 'http://localhost:3000'],
+        methods: ["GET,HEAD,PUT,PATCH,POST,DELETE"]
+      })
+);
+
 const wss = new WebSocket.Server({ server: server });
 wss.on('connection', function connection(ws){
     console.log('A new client connected!');
@@ -34,12 +43,7 @@ wss.on('connection', function connection(ws){
 
 
 
-cors({
-    "origin": ["*", 'http://localhost:3000'],
-    "methods": ["GET,HEAD,PUT,PATCH,POST,DELETE"],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-  });
+
 
 server.listen(process.env.PORT, () => {
     console.log(`http://localhost:${process.env.PORT}`);
