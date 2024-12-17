@@ -1,18 +1,30 @@
 const { sendError, sendSuccess } = require('../middleware/index');
 const Profile = require('../models/Profile');
+const User = require('../models/User');
 
 
 const createProfile = async (req, res) => {
+    const userId = req.id
     const newProfile = new Profile({
         ...req.body
     });
 
     try {
-        await newProfile.save();
-        return sendSuccess(res, 'successfully created user profile', newProfile)
+        const user = await User.findById(userId);
+        if(!user){
+            return sendError(res, 'no user found', 401);
+        };
+
+        try {
+            await newProfile.save();
+            return sendSuccess(res, 'successfully created user profile', newProfile)
+        } catch (error) {
+            console.log(error);
+            return sendError(res, 'Unable to perform this action, something went wrong', 500);
+        };
     } catch (error) {
         console.log(error);
-        return sendError(res, 'Unable to perform this action, something went wrong', 500);
+        return sendError(res, 'Unable to perform this action, something went wrong', 500);  
     }
 };
 
