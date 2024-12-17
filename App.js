@@ -11,7 +11,7 @@ const subjectRouter = require('./src/router/subject-router');
 const userVote = require('./src/router/vote-router');
 const server = require('http').createServer(app); 
 const  WebSocket = require('ws');
-const cors = require('cors')
+const cors = require('cors');
 
 app.use(express.json());
 app.use('/api/v1', userRouter)
@@ -26,7 +26,7 @@ app.use('/vote', userVote);
 app.use(
     cors({
         credentials: true,
-        origin: ["*", 'http://localhost:3000'],
+        origin: ['http://localhost:3000'],
         methods: ["GET,HEAD,PUT,PATCH,POST,DELETE"]
       })
 );
