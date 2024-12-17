@@ -13,6 +13,14 @@ const server = require('http').createServer(app);
 const  WebSocket = require('ws');
 const cors = require('cors');
 
+
+const corsOptions = {
+    credentials: true,
+    origin: ['http://localhost:3000']
+  };
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use('/api/v1', userRouter)
 app.use('/question', userQuestion);
@@ -22,13 +30,6 @@ app.use('/Admin', adminRouter);
 app.use('/Subject', subjectRouter);
 app.use('/vote', userVote);
 
-
-   const corsOptions = {
-        credentials: true,
-        origin: ['http://localhost:3000']
-      };
-
-      app.use(cors(corsOptions));
 
 const wss = new WebSocket.Server({ server: server });
 wss.on('connection', function connection(ws){
