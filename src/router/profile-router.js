@@ -1,7 +1,7 @@
 const express = require('express');
 const { createProfile, fetchAllProfile, updatedProfile, deletedProfile } = require('../controller/profile-controller');
 const { validateProfile, validation } = require('../middleware/validator');
-const { verifyLoginAdminToken } = require('../controller/admin-auth-controller');
+const { verifyLoginUserToken } = require('../controller/user-auth-controller');
 const router = express.Router();
 
 router.post('/create-profile',  verifyLoginUserToken, validateProfile, validation, createProfile);
