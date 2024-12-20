@@ -4,11 +4,11 @@ const Schema = mongoose.Schema
 const tokenSchema = new Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Amin",
+        ref: "User",
         required: true
     },
     token: {
-        type: Number,
+        type: String,
         required: true
     },
     createdAt: {
