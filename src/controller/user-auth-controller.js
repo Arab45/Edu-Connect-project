@@ -43,7 +43,6 @@ const generateVerificationToken = async (req, res, next) => {
     const { checkuserExist } = req.body;
 
     const otp = generateOTP(6);
-    console.log(otp);
     const hashToken = bcrypt.hashSync(otp);
 
     const existingUserVToken = await verificationToken.findOne({owner: checkuserExist._id});
