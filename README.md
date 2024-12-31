@@ -5,6 +5,12 @@
 
 
 
+ **Description**
+   - EduConnect aims to solve this by creating an API for secondary 
+     school student where they can ask questions, 
+     share knowledge, and help each other grow academically.
+
+
 
  **Stack**
   - Nodejs = <https://nodejs.org/docs/latest/api/>
@@ -35,6 +41,15 @@
   - Stores all user data
   - Maintains question and answer records
   - Tracks rating information
+
+  **Back4app was used to deploy the API**
+   - Back4app = <https://www.back4app.com/>
+
+  **License**
+    - The MIT License - Copyright(c) 2024-Present, Talenvo
+
+  **Author**
+   - Nurudeen Olayiwola (Software Engineer)
 
 
 
