@@ -46,8 +46,8 @@
    - Back4app = <https://www.back4app.com/>
 
   **License**
-    - The MIT License - Copyright(c) 2024-Present, Talenvo
-
+   - The MIT License-Copyright(c) 2024-Present, Talenvo
+ 
   **Author**
    - Nurudeen Olayiwola (Software Engineer)
 
