@@ -1,12 +1,6 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 # Edu-connect Project
-![Architecture Diagram]("/screenshotImage/screenshot.png")
-
-
-
-
-
+![Architecture Diagram](/screenshotImage/screenshot.png)
 
 
 
