@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Edu-connect Project
 ![Architecture Diagram]("/screenshotImage/screenshot.png")
 
@@ -78,3 +79,6 @@ Stores all user data
 Maintains question and answer records
 Tracks rating information
 >>>>>>> 2d74a112b606e54b01bde2617e42518201d055e2
+=======
+
+>>>>>>> 124a79d4965c86d3d1e7ef6a1ca58761498a0601
